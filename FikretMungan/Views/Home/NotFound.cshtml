@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Sayfa Bulunamadı (404)";
+    ViewData["MetaDescription"] = "Aradığınız sayfa bulunamadı.";
+}
+
+<style>
+    /* 404 Ana Kapsayıcı */
+    .error-page-section {
+        padding: 100px 0;
+        background-color: #fff;
+        text-align: center;
+    }
+
+    /* Devasa 404 Yazısı */
+    .error-code-large {
+        font-family: 'Handlee', cursive; /* Temanın el yazısı fontu */
+        font-size: 180px;
+        font-weight: bold;
+        line-height: 1;
+        color: var(--theme-purple, #56509F); /* Tema Moru */
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+    }
+
+        /* Ortadaki '0' rakamını turuncu ve hareketli yapalım */
+        .error-code-large span.zero {
+            color: var(--theme-orange, #FE6500); /* Tema Turuncusu */
+            display: inline-block;
+            animation: floatBubble 3s ease-in-out infinite;
+        }
+
+    /* Başlık */
+    .error-title {
+        font-family: 'Lato', sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    /* Açıklama Metni */
+    .error-description {
+        font-family: 'Lato', sans-serif;
+        font-size: 18px;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 50px auto;
+        line-height: 1.6;
+    }
+
+    /* Hafif yukarı aşağı süzülme animasyonu */
+    @@keyframes floatBubble {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* Mobil Uyumluluk */
+    @@edia (max-width: 768px) {
+        .error-code-large {
+            font-size: 120px;
+        }
+
+        .error-title {
+            font-size: 28px;
+        }
+    }
+</style>
+
+
+<div class="template-content">
+
+    <div class="template-content-section error-page-section template-main">
+
+        <div class="error-code-large">
+            4<span class="zero">0</span>4
+        </div>
+
+        <h2 class="error-title">Eyvah! Aradığınız Sayfa Kayıp.</h2>
+
+        <p class="error-description">
+            Endişelenmeyin, bazen en iyi küçük kaşifler bile yollarını kaybedebilir.
+            Aradığınız sayfa taşınmış, silinmiş veya bağlantı adresi hatalı olabilir.
+            Hadi sizi güvenli bir yere geri götürelim.
+        </p>
+
+        <div class="template-align-center">
+            <a href="/" class="template-component-button template-component-button-style-1">
+                Anasayfaya Dön<i></i>
+            </a>
+
+            @* <a asp-controller="Contact" asp-action="Index" class="template-component-button template-component-button-style-2" style="margin-left: 20px;">
+                Bize Ulaşın<i></i>
+            </a> *@
+        </div>
+
+    </div>
+
+</div>

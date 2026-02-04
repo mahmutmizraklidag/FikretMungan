@@ -1,0 +1,129 @@
+﻿@model IEnumerable<About>
+
+@{
+    // IEnumerable üzerinde index ile dönemeyeceğimiz için önce List'e çeviriyoruz.
+    var liste = Model.ToList();
+    var site = DataRequestModel.SiteSetting;
+
+    ViewData["Title"] = string.IsNullOrEmpty(Model.FirstOrDefault()?.MetaTitle)
+        ? "Hakkımızda"
+        : Model.FirstOrDefault()?.MetaTitle;
+
+    ViewData["MetaDescription"] = string.IsNullOrEmpty(Model.FirstOrDefault()?.MetaDescription)
+        ? (site?.MetaDescription ?? "Hakkımızda")
+        : Model.FirstOrDefault()?.MetaDescription;
+
+    ViewData["MetaKeywords"] = string.IsNullOrEmpty(Model.FirstOrDefault()?.Keywords)
+        ? (site?.Keywords ?? "Hakkımızda")
+        : Model.FirstOrDefault()?.Keywords;
+}
+
+<div class="template-header-bottom">
+	<div class="template-header-bottom-background"
+		 style="background-image: none; background-color: #56509F; text-align: center; padding-top: 60px; padding-bottom: 60px;">
+
+		<div class="template-main">
+
+			<h1 style="color: #ffffff; margin-bottom: 10px;">Hakkımızda</h1>
+
+			<h6 style="color: #CCCAE2; font-weight: 400;">
+				<a href="/" style="color: #ffffff; text-decoration: none;">Anasayfa</a>
+				<span style="margin: 0 10px;">/</span>
+				<span style="color: #CCCAE2;">Hakkımızda</span>
+			</h6>
+
+		</div>
+
+	</div>
+</div>
+<!-- Content -->
+
+
+<div class="template-content">
+
+    @for (int i = 0; i < liste.Count; i++)
+    {
+        var item = liste[i];
+        // i sayısı 2'ye tam bölünüyorsa (0, 2, 4...) bu 'Çift' sıradır (Yazı solda).
+        // Bölünmüyorsa (1, 3, 5...) 'Tek' sıradır (Resim solda).
+        bool isEven = (i % 2 == 0); 
+        
+        // Tek sayılarda (örneğin 2. sırada) arkaplan rengi değişiyor
+        string bgClass = isEven ? "" : "template-background-color-2";
+
+        <div class="template-content-section template-padding-bottom-5 @bgClass">
+            <div class="template-main">
+                <div class="template-layout-50x50 template-clear-fix">
+
+                    @if (isEven)
+                    {
+                        @* --- DURUM 1: YAZI SOLDA, RESİM SAĞDA (Varsayılan) --- *@
+                        
+                        <div class="template-layout-column-left template-margin-bottom-reset">
+                            <div class="template-align-center">
+                                <h3>@item.Title</h3>
+                                <div class="template-component-divider template-component-divider-style-2"></div>
+                                @Html.Raw(item.Description)
+                                
+                            </div>
+                        </div>
+
+                        <div class="template-layout-column-right template-margin-bottom-reset">
+                            <div class="template-component-gallery">
+                                <ul class="template-layout-100 template-clear-fix">
+                                    <li class="template-layout-column-left">
+                                        <div class="template-component-image template-component-image-hover-slide-enable template-fancybox template-preloader">
+                                            <a href="@item.Image" data-fancybox-group="gallery-1">
+                                                <img src="/img/@item.Image" alt="@item.Title" />
+                                                <span><span><span></span></span></span>
+                                            </a>
+                                           @*  <div>
+                                                <h6>@item.ResimAltBaslik</h6>
+                                                <span>Tenderhearts Class</span>
+                                            </div> *@
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @* --- DURUM 2: RESİM SOLDA, YAZI SAĞDA (Alternatif) --- *@
+
+                        <div class="template-layout-column-left template-margin-bottom-reset">
+                            <div class="template-component-gallery">
+                                <ul class="template-layout-100 template-clear-fix">
+                                    <li class="template-layout-column-left">
+                                        <div class="template-component-image template-component-image-hover-slide-enable template-fancybox template-preloader">
+                                            <a href="/img/@item.Image" data-fancybox-group="gallery-1">
+                                                <img src="/img/@item.Image" alt="@item.Title" />
+                                                <span><span><span></span></span></span>
+                                            </a>
+                                           @*  <div>
+                                                <h6>@item.ResimAltBaslik</h6>
+                                                <span>Tenderhearts Class</span>
+                                            </div> *@
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="template-layout-column-right template-margin-bottom-reset">
+                            <div class="template-align-center">
+                                <h3>@item.Title</h3>
+                                <div class="template-component-divider template-component-divider-style-2"></div>
+                                <p class="template-margin-top-3">
+                                    @Html.Raw(item.Description)
+                                </p>
+                                </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

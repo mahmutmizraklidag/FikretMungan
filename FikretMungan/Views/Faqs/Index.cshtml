@@ -1,0 +1,310 @@
+﻿@model IEnumerable<Faq>
+@{
+    ViewData["Title"] = "SSS";
+    ViewData["MetaDescription"] = "Sıkça Sorulan Sorular";
+    ViewData["MetaKeywords"] = "Sıkça Sorulan Sorular";
+
+}
+
+<style>
+    /* Sayfa Geneli */
+    .modern-faq-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* --- 1. ARAMA KUTUSU TASARIMI --- */
+    .search-wrapper {
+        max-width: 800px;
+        margin: 0 auto 30px auto;
+        position: relative;
+    }
+
+    /* --- SADECE BU BLOĞU GÜNCELLEMEN YETERLİ --- */
+
+    .faq-search-input {
+        width: 100%;
+        /* DEĞİŞİKLİK BURADA: padding-left 50px yerine 65px yapıldı */
+        padding: 15px 20px 15px 45px !important;
+        font-size: 16px;
+        color: #666;
+        background-color: #fff;
+        border: 2px solid #eee;
+        border-radius: 50px;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: 'Lato', sans-serif;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        box-sizing: border-box; /* Genişlik hesaplamasını garantiye alır */
+    }
+
+        /* Inputa tıklanınca (focus) */
+        .faq-search-input:focus {
+            border-color: #56509F; /* Tema Moru */
+            box-shadow: 0 4px 15px rgba(86, 80, 159, 0.15);
+        }
+
+    /* Arama İkonu (Kapsayıcı) */
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none; /* Tıklamayı inputa geçirsin */
+    }
+
+        /* SVG İkon Rengi */
+        .search-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #CCCAE2; /* Pasif Renk */
+            transition: stroke 0.3s ease;
+        }
+
+    /* Input aktifken ikon rengi değişsin */
+    .faq-search-input:focus + .search-icon svg,
+    .search-wrapper:focus-within .search-icon svg {
+        stroke: #56509F; /* Aktif Renk */
+    }
+
+    /* "Sonuç Yok" Mesajı */
+    .no-results {
+        display: none;
+        text-align: center;
+        color: #999;
+        font-size: 16px;
+        margin-top: 20px;
+        padding: 20px;
+        background: #f9f9ff;
+        border-radius: 10px;
+    }
+
+    /* --- 2. SSS KART TASARIMI --- */
+    .faq-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        transition: all 0.3s ease;
+    }
+
+        .faq-card:hover {
+            box-shadow: 0 8px 25px rgba(86, 80, 159, 0.15);
+            transform: translateY(-2px);
+        }
+
+    /* Başlık (Header) */
+    .faq-header {
+        padding: 20px 25px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+        .faq-header h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            font-family: 'Lato', sans-serif;
+        }
+
+    /* Sağdaki Artı/Eksi İkonu (CSS ile çizim) */
+    .faq-toggle-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+        flex-shrink: 0;
+        margin-left: 20px;
+    }
+
+        .faq-toggle-icon::before, .faq-toggle-icon::after {
+            content: '';
+            position: absolute;
+            background-color: #56509F; /* Mor */
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .faq-toggle-icon::before {
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+        /* Yatay */
+        .faq-toggle-icon::after {
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            transform: translateX(-50%);
+        }
+    /* Dikey */
+
+    /* --- AKTİF (AÇIK) DURUM STİLLERİ --- */
+    .faq-header.active {
+        background-color: #f9f9ff; /* Açık mor zemin */
+    }
+
+        .faq-header.active h3 {
+            color: #56509F; /* Başlık mor olur */
+        }
+
+        /* Aktifken Dikey çizgiyi döndür ve gizle -> Eksi işareti kalır */
+        .faq-header.active .faq-toggle-icon::after {
+            transform: translateX(-50%) rotate(90deg);
+            opacity: 0;
+        }
+        /* Aktifken rengi turuncu yap */
+        .faq-header.active .faq-toggle-icon::before {
+            background-color: #FE6500;
+        }
+
+    /* İçerik (Body) */
+    .faq-body {
+        padding: 0 25px 25px 25px;
+        color: #666;
+        line-height: 1.6;
+        display: none;
+        background-color: #f9f9ff;
+        border-top: 1px solid transparent;
+    }
+
+        .faq-body.default-open {
+            display: block;
+        }
+</style>
+
+<div class="template-header-bottom">
+    <div class="template-header-bottom-background"
+         style="background-image: none; background-color: #56509F; text-align: center; padding-top: 60px; padding-bottom: 60px;">
+        <div class="template-main">
+            <h1 style="color: #ffffff; margin-bottom: 10px;">Sıkça Sorulan Sorular</h1>
+            <h6 style="color: #CCCAE2; font-weight: 400;">
+                <a href="/" style="color: #ffffff; text-decoration: none;">Anasayfa</a>
+                <span style="margin: 0 10px;">/</span>
+                <span style="color: #ffffff;">SSS</span>
+            </h6>
+        </div>
+    </div>
+</div>
+
+<div class="template-content">
+    <div class="template-content-section template-padding-bottom-5 template-main">
+
+        <div class="template-align-center template-margin-bottom-5">
+            <h3>Merak Edilen Konular</h3>
+            <div class="template-component-divider template-component-divider-style-2"></div>
+            <p class="template-margin-top-3">Aşağıdaki başlıklara tıklayarak veya arama yaparak detayları görüntüleyebilirsiniz.</p>
+        </div>
+
+        <div class="search-wrapper">
+            <input type="text" id="faqSearchInput" class="faq-search-input" placeholder="Merak ettiğiniz konuyu arayın...">
+
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </span>
+        </div>
+
+        <div class="modern-faq-wrapper">
+            @{
+                int i = 0;
+            }
+ @foreach (var item in Model)
+            {
+                var activeClass = (i == 0) ? "active" : "";
+                var openClass = (i == 0) ? "default-open" : "";
+
+                <div class="faq-card">
+                    <div class="faq-header @activeClass">
+                        <h3>@item.Question</h3>
+                        <div class="faq-toggle-icon"></div>
+                    </div>
+                    <div class="faq-body @openClass">
+                        <p>
+                            @item.Answer
+                        </p>
+                    </div>
+                </div>
+
+                i++;
+            }
+
+
+            <div id="noResults" class="no-results">
+                <p>Aradığınız kriterlere uygun bir sonuç bulunamadı.</p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+            // --- 1. AKORDEON MANTIĞI (Biri açılınca diğeri kapanır) ---
+            $(".faq-header").click(function() {
+                var $thisHeader = $(this);
+                var $thisContent = $thisHeader.next(".faq-body");
+
+                // Eğer zaten açıksa, kapat (Toggle özelliği)
+                if($thisHeader.hasClass("active")){
+                    $thisHeader.removeClass("active");
+                    $thisContent.slideUp(300);
+                } else {
+                    // Değilse: Önce diğer tüm açık olanları kapat
+                    $(".faq-header").removeClass("active");
+                    $(".faq-body").slideUp(300);
+
+                    // Sonra tıklananı aç
+                    $thisHeader.addClass("active");
+                    $thisContent.slideDown(300);
+                }
+            });
+
+            // --- 2. CANLI ARAMA MANTIĞI ---
+            $("#faqSearchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase(); // Küçük harfe çevir
+                var visibleCards = 0;
+
+                $(".faq-card").each(function() {
+                    // Kartın başlığını al
+                    var title = $(this).find(".faq-header h3").text().toLowerCase();
+
+                    // Eşleşme kontrolü
+                    if (title.indexOf(value) > -1) {
+                        $(this).show();
+                        visibleCards++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+
+                // Sonuç yoksa uyarı göster
+                if(visibleCards === 0) {
+                    $("#noResults").slideDown();
+                } else {
+                    $("#noResults").slideUp();
+                }
+            });
+
+        });
+    </script>
+}

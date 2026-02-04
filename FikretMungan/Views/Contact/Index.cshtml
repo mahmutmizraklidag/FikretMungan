@@ -1,0 +1,349 @@
+﻿@{
+    ViewData["Title"] = "İletişim";
+    ViewData["MetaDescription"] = "Bizimle iletişime geçin";
+    ViewData["MetaKeywords"] = "Bizimle iletişime geçin";
+
+}
+<style>
+    /* 1. Temel Kutu Ayarları (.alert) */
+    .alert {
+        padding: 15px !important; /* İç boşluk */
+        border: 1px solid transparent !important; /* İnce bir çerçeve */
+        border-radius: 6px !important; /* Köşeleri yuvarlatma */
+        font-family: system-ui, -apple-system, sans-serif !important; /* Modern yazı tipi */
+        font-size: 16px !important;
+        box-sizing: border-box !important; /* Genişlik hesaplamasını düzeltir */
+        width: 100% !important; /* Kutunun tam genişlikte olmasını sağlar */
+    }
+
+    /* 2. Başarılı Mesajı Stili (.alert-success) */
+    .alert-success {
+        color: #0f5132 !important; /* Koyu yeşil yazı rengi */
+        background-color: #d1e7dd !important; /* Açık yeşil arka plan */
+        border-color: #badbcc !important; /* Orta yeşil çerçeve rengi */
+    }
+
+    /* 3. Hata Mesajı Stili (.alert-danger) */
+    .alert-danger {
+        color: #842029 !important; /* Koyu kırmızı yazı rengi */
+        background-color: #f8d7da !important; /* Açık kırmızı arka plan */
+        border-color: #f5c2c7 !important; /* Orta kırmızı çerçeve rengi */
+    }
+
+    /* 4. Üstten Boşluk (.mt-3) */
+    .mt-3 {
+        margin-top: 16px !important;
+    }
+
+    /* 5. Metni Ortala (.text-center) */
+    .text-center {
+        text-align: center !important;
+    }
+</style>
+<style>
+    :root {
+        --theme-purple: #56509F;
+        --theme-orange: #FE6500;
+        --theme-text: #555555;
+        --theme-border: #e0e0e0;
+    }
+
+    .modern-form-container {
+        background: #ffffff;
+        padding: 10px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 40px;
+    }
+
+        .input-group input,
+        .input-group textarea {
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+            padding: 10px 0;
+            display: block;
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--theme-border);
+            background: transparent;
+            color: var(--theme-text);
+            border-radius: 0;
+            transition: all 0.3s ease;
+        }
+
+        .input-group textarea {
+            resize: none;
+            min-height: 100px;
+        }
+
+            .input-group input:focus,
+            .input-group textarea:focus {
+                outline: none;
+            }
+
+        /* Etiket Stilleri */
+        .input-group label {
+            color: #999;
+            font-family: 'Lato', sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            position: absolute;
+            pointer-events: none;
+            left: 0;
+            top: 10px;
+            transition: 0.3s ease all;
+        }
+
+        /* Floating Label Efekti */
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label,
+        .input-group textarea:focus ~ label,
+        .input-group textarea:not(:placeholder-shown) ~ label {
+            top: -20px;
+            font-size: 13px;
+            color: var(--theme-purple);
+            font-weight: 700;
+        }
+
+    /* Alt Çizgi Animasyonu */
+    .bar {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+        .bar:before, .bar:after {
+            content: '';
+            height: 2px;
+            width: 0;
+            bottom: 0;
+            position: absolute;
+            background: var(--theme-orange);
+            transition: 0.3s ease all;
+        }
+
+        .bar:before {
+            left: 50%;
+        }
+
+        .bar:after {
+            right: 50%;
+        }
+
+    .input-group input:focus ~ .bar:before,
+    .input-group input:focus ~ .bar:after,
+    .input-group textarea:focus ~ .bar:before,
+    .input-group textarea:focus ~ .bar:after {
+        width: 50%;
+    }
+
+    /* Buton Stili */
+    .modern-submit-btn {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px 40px !important;
+        border-radius: 50px !important;
+        background-color: var(--theme-purple) !important;
+        border: none !important;
+        color: #fff !important;
+        font-family: 'Handlee', cursive !important;
+        font-size: 18px !important;
+        cursor: pointer;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+        .modern-submit-btn:hover {
+            background-color: var(--theme-orange) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(254, 101, 0, 0.3);
+        }
+
+        .modern-submit-btn svg {
+            transition: transform 0.3s ease;
+        }
+
+        .modern-submit-btn:hover svg {
+            transform: translateX(5px) rotate(-10deg);
+        }
+
+    /* Mobil Uyumluluk */
+    @@media (max-width: 768px) {
+        .template-layout-column-left,
+        .template-layout-column-right {
+            width: 100% !important;
+            float: none !important;
+            margin-right: 0 !important;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        .modern-submit-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="template-header-bottom">
+    <div class="template-header-bottom-background" style="background-image: none; background-color: #56509F; text-align: center; padding-top: 60px; padding-bottom: 60px;">
+        <div class="template-main">
+            <h1 style="color: #ffffff; margin-bottom: 10px;">İletişim</h1>
+            <h6 style="color: #CCCAE2; font-weight: 400;">
+                <a href="/" style="color: #ffffff; text-decoration: none;">Anasayfa</a>
+                <span style="margin: 0 10px;">/</span>
+                <span style="color: #ffffff;">İletişim</span>
+            </h6>
+        </div>
+    </div>
+</div>
+
+<div class="template-content-section template-padding-reset">
+    @Html.Raw(DataRequestModel.SiteSetting.mapLink)
+</div>
+
+<div class="template-content">
+    <div class="template-content-section template-main">
+
+        <div class="template-component-feature template-component-feature-style-1 template-component-feature-position-left template-component-feature-size-medium template-margin-bottom-5">
+            <ul class="template-layout-33x33x33 template-clear-fix">
+
+                <li class="template-layout-column-left">
+                    <div class="template-icon-feature template-icon-feature-name-envelope-alt"></div>
+                    <h5>Adres Bilgileri</h5>
+                    <p>
+                        @DataRequestModel.SiteSetting.Address
+                    </p>
+                </li>
+
+                <li class="template-layout-column-center">
+                    <div class="template-icon-feature template-icon-feature-name-mobile-alt"></div>
+                    <h5>Telefon & E-Posta</h5>
+                    <p>
+                        Telefon: @DataRequestModel.SiteSetting.Phone<br />
+                        <a href="@DataRequestModel.SiteSetting.Email">@DataRequestModel.SiteSetting.Email</a>
+                    </p>
+                </li>
+
+                <li class="template-layout-column-right">
+                    <div class="template-icon-feature template-icon-feature-name-clock-alt"></div>
+                    <h5>Çalışma Saatleri</h5>
+                    <p>
+                        Pazartesi – Cuma<br />
+                        08:00 – 17:30<br />
+                        Hafta Sonu Kapalı
+                    </p>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="template-component-divider template-component-divider-style-1 template-margin-bottom-5"></div>
+
+        <div class="template-align-center template-margin-bottom-4">
+            <h3>Bize Mesaj Gönderin</h3>
+            <p>Aklınıza takılan sorular veya kayıt bilgisi için aşağıdaki formu doldurabilirsiniz.</p>
+        </div>
+
+        <div class="template-component-contact-form modern-form-container">
+            <form action="#" id="iletisimFormu" method="post" class="modern-form">
+                <div class="template-layout-50x50 template-clear-fix">
+
+                    <div class="template-layout-column-left">
+
+                        <div class="input-group">
+                            <input type="text" name="Name" id="Name" required placeholder=" " autocomplete="off" />
+                            <label for="contact-form-name">İsim Soyisim *</label>
+                            <span class="highlight"></span><span class="bar"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="email" name="Email" id="Email" required placeholder=" " autocomplete="off" />
+                            <label for="contact-form-email">E-mail Adresi *</label>
+                            <span class="highlight"></span><span class="bar"></span>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="tel" name="Phone" id="Phone" placeholder=" " autocomplete="off" />
+                            <label for="contact-form-phone">Telefon Numarası</label>
+                            <span class="highlight"></span><span class="bar"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="template-layout-column-right">
+
+                        <div class="input-group">
+                            <input type="text" name="Subject" id="Subject" required placeholder=" " autocomplete="off" />
+                            <label for="contact-form-subject">Konu *</label>
+                            <span class="highlight"></span><span class="bar"></span>
+                        </div>
+
+                        <div class="input-group textarea-group">
+                            <textarea rows="9" name="Message" id="Message" required placeholder=" "></textarea>
+                            <label for="contact-form-message">Mesajınız *</label>
+                            <span class="highlight"></span><span class="bar"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="template-form-line template-form-line-submit template-align-center template-margin-top-3">
+                    <div class="template-state-block">
+                        <button class="template-component-button template-component-button-style-1 modern-submit-btn" type="submit" name="contact-form-submit" id="contact-form-submit">
+                            Mesajı Gönder
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Mesaj kutuları -->
+                <div class="alert alert-success sent-message mt-3 text-center" style="display:none;">Mesajınız gönderildi.</div>
+                <div class="alert alert-danger error-message mt-3 text-center" style="display:none;"></div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Main End -->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $("#iletisimFormu").submit(function (e) {
+        e.preventDefault();
+
+        var entity = {
+            Name: $("#Name").val(),
+            Phone: $("#Phone").val(),
+            Email: $("#Email").val(),
+            Subject: $("#Subject").val(),
+            Message: $("#Message").val()
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "/Contact/Index",
+            dataType: "json",
+            data: entity,
+            success: function (res) {
+                if (res.success) {
+                    $("#iletisimFormu")[0].reset();
+                    $(".sent-message").show();
+                    $(".error-message").hide();
+                } else {
+                    $(".error-message").show().html(res.message);
+                    $(".sent-message").hide();
+                }
+            },
+            error: function () {
+                $(".error-message").show().html("Sunucu hatası!");
+                $(".sent-message").hide();
+            }
+        });
+    });
+</script>

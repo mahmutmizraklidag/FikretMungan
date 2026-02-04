@@ -1,0 +1,67 @@
+﻿@model Blog
+@{
+	var site = DataRequestModel.SiteSetting;
+
+	ViewData["Title"] = Model?.MetaTitle ?? "Blog";
+	ViewData["MetaDescription"] = Model?.MetaDescription ?? site?.MetaDescription ?? "Blog";
+	ViewData["MetaKeywords"] = Model?.Keywords ?? site?.Keywords ?? "Blog";
+}
+<!-- Content -->
+<div class="template-content">
+
+	<!-- Section -->
+	<div class="template-content-section template-content-layout template-content-layout-sidebar-right template-main template-clear-fix ">
+
+		<!-- Content -->
+		<div class="template-content-layout-column-center">
+
+			<!-- Post -->
+			<div class="template-post">
+
+				<!-- Icon -->
+				<div class="template-post-section-icon">
+					<div class="template-post-icon template-post-icon-image"></div>
+				</div>
+
+				<!-- Preambule -->
+				<div class="template-post-section-preambule">
+					<!-- Image -->
+					<div class="template-component-image template-fancybox template-preloader">
+						<a href="/img/@Model.Image">
+							<img src="@Url.Content("~/img/" + Model.Image)" alt="@Model.Title" />
+							<span><span><span></span></span></span>
+						</a>
+					</div>
+				</div>
+
+				
+
+				<!-- Content -->
+				<div class="template-post-section-content">
+					<div class="template-post-content">
+						<h1 class="template-margin-top-3">@Model.Title</h1>
+					@Html.Raw(Model.Description)
+
+						
+					</div>
+				</div>
+
+				
+
+			
+
+				
+
+			
+
+			
+
+			</div>
+
+		</div>
+
+		
+
+	</div>
+
+</div>

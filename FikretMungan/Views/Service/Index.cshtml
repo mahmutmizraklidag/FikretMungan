@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Service>
+
+@{
+    ViewData["Title"] = "Hizmetlerimiz";
+    ViewData["MetaDescription"] = "İdeio Creative Reklam Ajansı";
+    ViewData["MetaKeywords"] = "İdeio Creative Reklam Ajansı";
+
+}
+<div class="template-content">
+
+    <div class="template-content-section template-padding-top-reset template-padding-bottom-5 template-main">
+
+        <div class="template-component-header-subheader">
+            <h2>Hizmetlerimiz</h2>
+            <h6>Yenidoğan takibinden uyku eğitimine, sağlıklı çocuk izleminden online danışmanlığa kadar geniş bir yelpaze.</h6>
+            <div></div>
+        </div>
+
+        <div class="template-layout-50x50 template-clear-fix">
+            @foreach(var item in Model)
+            {
+                <div class="template-layout-column-left template-margin-bottom-reset">
+                    <div class="template-component-image template-component-image-hover-slide-enable">
+                        
+                            <img src="/img/@item.Image" alt="@item.Title" />
+                            <span><span><span></span></span></span>
+                        
+                        <div>
+                            <h5>@item.Title</h5>
+                        </div>
+                        <div class="template-align-center template-margin-top-2">
+                            <a asp-controller="Service" asp-action="Detail" asp-route-slug="@item.Slug" class="template-component-button template-component-button-style-1">Daha Fazla<i></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            }
+          
+            
+
+        </div>
+
+    </div>
+</div>

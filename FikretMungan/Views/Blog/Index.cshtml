@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Blog>
+@{
+
+    var modelList = Model.ToList();
+
+    ViewData["Title"] = "Blog";
+    ViewData["MetaDescription"] = "Uzm. Dr. Fikret Mungan";
+    ViewData["MetaKeywords"] = "Uzm. Dr. Fikret Mungan";
+
+
+}
+
+<style>
+    /* Kartın Ana Çerçevesi */
+    .template-post {
+        background-color: #fff;
+        border: 1px solid #f0f0f0; /* Çok hafif, zarif bir gri çizgi */
+        border-radius: 12px; /* Modern yuvarlak köşeler */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.04); /* Hafif derinlik hissi veren gölge */
+        overflow: hidden; /* Resmin köşelerden taşmasını engeller */
+        transition: all 0.3s ease; /* Hover (üzerine gelme) animasyonu için */
+        padding-bottom: 20px; /* Kartın altında biraz nefes alma boşluğu */
+        height: 100%; /* Tüm kartların eşit yükseklikte durması için */
+    }
+
+        /* Fare Üzerine Gelince (Hover) Efekti */
+        .template-post:hover {
+            transform: translateY(-5px); /* Kartı hafifçe havaya kaldır */
+            box-shadow: 0 10px 25px rgba(86, 80, 159, 0.15); /* Temanın mor rengiyle belirginleşen gölge */
+            border-color: #CCCAE2; /* Çerçeve rengi hafifçe mora dönsün */
+        }
+
+    /* Resim Ayarları (Üst köşelerin kartla uyumlu oval olması için) */
+    .template-post-section-preambule {
+        margin-bottom: 15px !important;
+    }
+
+        .template-post-section-preambule img {
+            border-radius: 12px 12px 0 0; /* Sadece üst köşeler oval */
+            width: 100%;
+            object-fit: cover; /* Resimlerin bozulmadan kutuyu doldurması için */
+            aspect-ratio: 16 / 9; /* Resimlerin standart bir boyutta durması için (İsteğe bağlı) */
+        }
+
+    /* Yazıların Kenarlara Yapışmaması İçin İç Boşluk */
+    .template-post-section-header {
+        padding: 0 15px;
+    }
+</style>
+
+<div class="template-header-bottom">
+    <div class="template-header-bottom-background"
+         style="background-image: none; background-color: #56509F; text-align: center; padding-top: 60px; padding-bottom: 60px;">
+
+        <div class="template-main">
+
+            <h1 style="color: #ffffff; margin-bottom: 10px;">Blog</h1>
+
+            <h6 style="color: #CCCAE2; font-weight: 400;">
+                <a href="/" style="color: #ffffff; text-decoration: none;">Anasayfa</a>
+                <span style="margin: 0 10px;">/</span>
+                <a href="#" style="color: #ffffff; text-decoration: none;">Blog</a>
+            </h6>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="template-content">
+    <div class="template-content-section template-main template-clear-fix">
+
+        <div class="template-layout-33x33x33 template-clear-fix">
+
+            @for (int i = 0; i < modelList.Count; i++)
+            {
+                // --- DİNAMİK CLASS MANTIĞI ---
+                string columnClass = "";
+
+                // Modülo 3 işlemi: 0->Sol, 1->Orta, 2->Sağ
+                if (i % 3 == 0)
+                {
+                    columnClass = "template-layout-column-left";
+                }
+                else if (i % 3 == 1)
+                {
+                    columnClass = "template-layout-column-center";
+                }
+                else
+                {
+                    columnClass = "template-layout-column-right";
+                }
+                // -----------------------------
+
+                <div class="@columnClass">
+                    <div class="template-post">
+
+                        <div class="template-post-section-preambule template-margin-bottom-2">
+                            <div class="template-component-image template-preloader">
+                                
+                                    <img src="/img/@modelList[i].Image" alt="@modelList[i]" />
+                                    <span><span><span></span></span></span>
+                                
+                            </div>
+                        </div>
+
+                        <div class="template-post-section-header template-align-center template-margin-bottom-2">
+                            <a href="#" class="template-post-date">
+                                @modelList[i].CreatedAt.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))
+                            </a>
+                            <h5 class="template-post-header" style="margin-top:5px !important">
+                                <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@modelList[i].Slug">@modelList[i].Title</a>
+                            </h5>
+                           
+                        </div>
+
+                      
+
+                        @* <div class="template-align-center">
+                            <a asp-controller="Blog" asp-action="Detail" asp-route-slug="@modelList[i].Slug" class="template-component-button template-component-button-style-1">Devamını Oku<i></i></a>
+                        </div> *@
+
+                    </div>
+                </div>
+
+                // --- SATIR SONU KONTROLÜ (CLEAFIX) ---
+                // Eğer bu eleman 3'ün katıysa (yani sağ sütundaysa) veya listenin son elemanıysa
+                // float temizliği yapıyoruz ki sonraki satır düzgün başlasın.
+                if ((i + 1) % 3 == 0)
+                {
+                    <div class="template-clear-fix template-margin-bottom-3"></div>
+                }
+            }
+
+        </div>
+
+       
+
+    </div>
+</div>

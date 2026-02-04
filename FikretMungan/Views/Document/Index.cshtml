@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Document>
+@{
+	ViewData["Title"] = "Belgeler";
+	ViewData["MetaDescription"] = "Bizimle iletişime geçin";
+	ViewData["MetaKeywords"] = "Bizimle iletişime geçin";
+
+}
+	<!-- Content -->
+<div class="template-content">
+
+	<!-- Section -->
+	<div class="template-content-section template-padding-bottom-5 template-main">
+
+		<!-- Gallery -->
+        <div class="template-component-gallery">
+            <ul class="template-layout-33x33x33 template-clear-fix">
+
+                @{
+                    // Listeyi index numarasıyla dönebilmek için ToList() yapıyoruz
+                    var docList = Model.ToList();
+                }
+
+                @for (int i = 0; i < docList.Count; i++)
+                {
+                    var item = docList[i];
+                    string columnClass = "";
+
+                    // Modülo 3 mantığı ile sütun sırasını belirliyoruz
+                    if (i % 3 == 0) { columnClass = "template-layout-column-left"; } // 1., 4., 7. resimler
+                    else if (i % 3 == 1) { columnClass = "template-layout-column-center"; } // 2., 5., 8. resimler
+                    else { columnClass = "template-layout-column-right"; } // 3., 6., 9. resimler
+
+                    <li class="@columnClass">
+                        <div class="template-component-image template-component-image-hover-slide-enable template-fancybox template-preloader">
+                            <a href="/img/@item.Image" data-fancybox-group="gallery-1">
+                                <img src="/img/@item.Image" alt="@item.Title" />
+                                <span><span><span></span></span></span>
+                            </a>
+                            <div>
+                                <h6>@item.Title</h6>
+                            </div>
+                        </div>
+                    </li>
+
+                    // Satır Sonu Düzeltici (Clearfix)
+                    // Her 3 resimde bir satırı sıfırlıyoruz ki resim boyutları farklıysa tasarım kaymasın
+                    if ((i + 1) % 3 == 0)
+                    {
+                        <li style="clear: both; width: 100%; height: 0; padding: 0; margin: 0; display: block;"></li>
+                    }
+                }
+
+            </ul>
+        </div>
+
+	</div>
+
+	
+
+</div>
