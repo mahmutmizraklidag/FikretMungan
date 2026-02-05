@@ -1,5 +1,7 @@
 ﻿using FikretMungan.Data;
 using FikretMungan.Entities;
+using FikretMungan.Models;
+using FikretMungan.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,9 +33,11 @@ namespace FikretMungan.Controllers
 
                     if (result > 0)
                     {
-                        //var temp = MailTemplates.ContactFormTemplate(entity);
-                        //MailSender mailSender = new MailSender();
-                        //await mailSender.SendMailAsync(entity.Email, "Zoom Danışmanlık iletişim Formu", temp, entity.Name);
+                        var temp = MailTemplates.ContactFormTemplate(entity);
+                        var confirmationTemp = MailTemplates.CustomerConfirmationTemplate(entity);
+                        MailSender mailSender = new MailSender();
+                        await mailSender.SendMailAsync("m.mizraklidag@hotmail.com", "İletişim Formu Talebi", temp, entity.Name);
+                        await mailSender.SendMailAsync(entity.Email, "İletişim Formu Talebiniz Alındı", confirmationTemp, entity.Name);
                         return Json(new { success = true, message = "Mesajınız gönderildi." });
                     }
                 }

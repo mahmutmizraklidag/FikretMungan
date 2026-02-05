@@ -48,16 +48,50 @@
 
 						<div class="template-component-social-icon template-component-social-icon-style-1 template-clear-fix">
 							<ul>
-								<li><a href="#" class="template-component-social-icon-facebook" title="Facebook"></a></li>
-								<li><a href="#" class="template-component-social-icon-twitter" title="Twitter"></a></li>
-								<li><a href="@DataRequestModel.SiteSetting.Instagram" class="template-component-social-icon-instagram" title="Instagram"></a></li>
-								<li><a href="#" class="template-component-social-icon-youtube" title="Youtube"></a></li>
+								@if (!string.IsNullOrEmpty(DataRequestModel.SiteSetting.Instagram))
+								{
+									<li><a href="@DataRequestModel.SiteSetting.Instagram" target="_blank" class="template-component-social-icon-instagram" title="Instagram"></a></li>
+								}
+								@if (!string.IsNullOrEmpty(DataRequestModel.SiteSetting.Facebook))
+								{
+									<li><a href="@DataRequestModel.SiteSetting.Facebook" class="template-component-social-icon-facebook" target="_blank" title="Facebook"></a></li>
+								}
+								@if (!string.IsNullOrEmpty(DataRequestModel.SiteSetting.YouTube))
+								{
+									<li><a href="@DataRequestModel.SiteSetting.YouTube" class="template-component-social-icon-youtube" target="_blank" title="Youtube"></a></li>
+								}
+								@if (!string.IsNullOrEmpty(DataRequestModel.SiteSetting.Twitter))
+								{
+									<li><a href="@DataRequestModel.SiteSetting.Twitter" class="template-component-social-icon-twitter" target="_blank" title="Twitter"></a></li>
+								}
+								
+								
+								
+								
 							</ul>
 						</div>
 
 						<div class="template-margin-top-2">
-							<span>📞 @DataRequestModel.SiteSetting.Phone</span><br>
-							<span>📧 @DataRequestModel.SiteSetting.Email</span>
+
+							@{
+								// Telefon numarasını arama formatına uygun hale getirelim (Boşlukları temizle)
+								string cleanPhone = DataRequestModel.SiteSetting.Phone?.Replace(" ", "").Replace("(", "").Replace(")", "").Replace("-", "") ?? "";
+							}
+							<a href="tel:@cleanPhone" style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px; text-decoration: none; color: #ffffff;">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+								</svg>
+								<span>@DataRequestModel.SiteSetting.Phone</span>
+							</a>
+
+							<a href="mailto:@DataRequestModel.SiteSetting.Email" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: #ffffff;">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+									<polyline points="22,6 12,13 2,6"></polyline>
+								</svg>
+								<span>@DataRequestModel.SiteSetting.Email</span>
+							</a>
+
 						</div>
 					</div>
 				</li>
@@ -65,15 +99,13 @@
 			</ul>
 
 		</div>
-
-	</div>
-
-	<div class="template-footer-bottom">
 		<div class="template-align-center template-main">
 			<div>
 				&copy; 2026 <a href="https://www.ideiocreative.com" target="_blank">İdeio Creative</a>. Tüm Hakları Saklıdır.
 			</div>
 		</div>
 	</div>
+
+	
 
 </div>

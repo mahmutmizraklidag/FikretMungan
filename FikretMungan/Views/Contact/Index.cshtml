@@ -225,8 +225,14 @@
                     <div class="template-icon-feature template-icon-feature-name-mobile-alt"></div>
                     <h5>Telefon & E-Posta</h5>
                     <p>
-                        Telefon: @DataRequestModel.SiteSetting.Phone<br />
-                        <a href="@DataRequestModel.SiteSetting.Email">@DataRequestModel.SiteSetting.Email</a>
+                        @{
+                            // Telefon numarasını temizle (Boşluk, parantez vb. kaldır)
+                            string cleanPhone = DataRequestModel.SiteSetting.Phone?.Replace(" ", "").Replace("(", "").Replace(")", "").Replace("-", "") ?? "";
+                        }
+
+                        <strong>Telefon: </strong><a href="tel:@cleanPhone" style="text-decoration: none; color: inherit;">@DataRequestModel.SiteSetting.Phone</a><br />
+
+                        <strong>E-Mail: </strong><a href="mailto:@DataRequestModel.SiteSetting.Email" style="text-decoration: none; color: inherit;">@DataRequestModel.SiteSetting.Email</a>
                     </p>
                 </li>
 
@@ -234,9 +240,9 @@
                     <div class="template-icon-feature template-icon-feature-name-clock-alt"></div>
                     <h5>Çalışma Saatleri</h5>
                     <p>
-                        Pazartesi – Cuma<br />
-                        08:00 – 17:30<br />
-                        Hafta Sonu Kapalı
+                        Pazartesi – Cumartesi<br />
+                        09:30 – 18:00<br />
+                        Pazar: Kapalı
                     </p>
                 </li>
 

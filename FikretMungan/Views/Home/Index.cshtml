@@ -23,11 +23,30 @@
                             <h3 class="slide-desc tp-font-lato-light">Bir Hekimlik Anlayışı</h3>
 
                             <div class="slide-button">
-                                <a asp-controller="Contact" asp-action="Index" class="template-component-button template-component-button-style-1">İletişime Geçin<i></i></a>
+                                <a asp-controller="Blog" asp-action="Index" class="template-component-button template-component-button-style-1">Merak Ettikleriniz<i></i></a>
                             </div>
                         </div>
                         <div class="slide-image">
-                            <img src="media/image/_sample/slider/slider_slide1_img1.png" alt="Doktor Muayenesi">
+                            <img src="media/image/_sample/slider/s1.png" alt="Doktor Muayenesi">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="swiper-slide">
+                    <div class="slide-background" style="background-image: url('media/image/_sample/slider/slider_slide3_background.png');"></div>
+
+                    <div class="slide-content template-main">
+                        <div class="slide-text-wrapper">
+                            <h4 class="slide-subtitle tp-font-handlee">Dünyanın Her Yerinden...</h4>
+                            <h2 class="slide-title tp-font-lato-black">Online Danışmanlık</h2>
+                            <h3 class="slide-desc tp-font-lato-light">& Uyku Koçluğu</h3>
+
+                            <div class="slide-button">
+                                <a asp-controller="Service" asp-action="Index" class="template-component-button template-component-button-style-1">Hizmetlerimiz<i></i></a>
+                            </div>
+                        </div>
+                        <div class="slide-image">
+                            <img src="media/image/_sample/slider/s2.png" alt="Uyku Eğitimi">
                         </div>
                     </div>
                 </div>
@@ -42,33 +61,16 @@
                             <h3 class="slide-desc tp-font-lato-light">ve Sağlık Takibi</h3>
 
                             <div class="slide-button">
-                                <a asp-controller="Service" asp-action="Index" class="template-component-button template-component-button-style-1">Hizmetlerimiz<i></i></a>
+                                <a asp-controller="Faqs" asp-action="Index" class="template-component-button template-component-button-style-1">Sıkça Sorulan Sorular<i></i></a>
                             </div>
                         </div>
                         <div class="slide-image">
-                            <img src="media/image/_sample/slider/slider_slide2_img1.png" alt="Bebek Gelişimi">
+                            <img src="media/image/_sample/slider/s3.png" alt="Bebek Gelişimi">
                         </div>
                     </div>
                 </div>
 
-                <div class="swiper-slide">
-                    <div class="slide-background" style="background-image: url('media/image/_sample/slider/slider_slide3_background.png');"></div>
-
-                    <div class="slide-content template-main">
-                        <div class="slide-text-wrapper">
-                            <h4 class="slide-subtitle tp-font-handlee">Dünyanın Her Yerinden...</h4>
-                            <h2 class="slide-title tp-font-lato-black">Uyku Koçluğu</h2>
-                            <h3 class="slide-desc tp-font-lato-light">& Online Danışmanlık</h3>
-
-                            <div class="slide-button">
-                                <a asp-controller="Contact" asp-action="Index" class="template-component-button template-component-button-style-1">İletişime Geçin<i></i></a>
-                            </div>
-                        </div>
-                        <div class="slide-image">
-                            <img src="media/image/_sample/slider/slider_slide3_img1.png" alt="Uyku Eğitimi">
-                        </div>
-                    </div>
-                </div>
+               
 
             </div>
 
@@ -80,8 +82,31 @@
     </div>
 
 
+    <div class="template-content-section template-padding-bottom-5" style="padding:0px 0px 80px 0px !important;">
+        <div class="template-main">
+
+            <div class="template-component-header-subheader">
+                <h2>Danışan Yorumları</h2>
+                <h6>Google üzerinden gelen gerçek danışan deneyimleri.</h6>
+                <div></div>
+            </div>
+
+            <div align="center">
+
+                <script defer async src='https://cdn.trustindex.io/loader.js?616a154640810910af7683a6d54'></script>
+                <script>
+                    (function loop() {
+                        // Bu kısım örnektir, senin kopyaladığın kodda kendi ID'n olacak.
+                        // Trustindex sana özel bir div ve script verecek.
+                    })();
+                </script>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Section -->
-    <div class="template-content-section template-padding-reset template-background-image">
+   @*  <div class="template-content-section template-padding-reset template-background-image">
 
         <div class="template-main">
 
@@ -97,7 +122,7 @@
             </div>
 
         </div>
-    </div>
+    </div> *@
 
     <!-- Section -->
     <div class="template-content-section template-padding-bottom-5 template-background-color-2">
@@ -180,9 +205,12 @@
                     <!-- Nivo slider -->
                     <div class="template-component-nivo-slider template-component-nivo-slider-style-1 template-preloader">
                         <div>
-                            <img src="media/image/_sample/690x506/10.jpg" data-thumb="media/image/_sample/690x506/10.jpg" alt="" />
-                            <img src="media/image/_sample/690x506/5.jpg" data-thumb="media/image/_sample/690x506/5.jpg" alt="" />
-                            <img src="media/image/_sample/690x506/11.jpg" data-thumb="media/image/_sample/690x506/11.jpg" alt="" />
+                            @foreach(var about in DataRequestModel.Abouts)
+                            {
+                                <img src="/img/@about.Image" data-thumb="/img/@about.Image" alt="@about.Title" />
+                            }
+                            
+                          
                         </div>
                     </div>
 
@@ -193,6 +221,49 @@
         </div>
 
     </div>
+   
+    <!-- Section -->
+    <div class="template-content-section template-padding-top-reset template-padding-bottom-5">
+
+        <div class="template-main">
+
+            <div class="template-component-header-subheader">
+                <h2>Hizmetlerimiz</h2>
+                <h6>Yenidoğan takibinden uyku eğitimine, sağlıklı çocuk izleminden online danışmanlığa kadar geniş bir yelpaze.</h6>
+                <div></div>
+            </div>
+
+
+
+            <div class="template-component-divider template-component-divider-style-1"></div>
+
+            <div class="template-layout-50x50 template-clear-fix">
+
+                @foreach (var item in DataRequestModel.Services)
+                {
+                    <div class="template-layout-column-left template-margin-bottom-reset">
+                        <div class="template-component-image template-component-image-hover-slide-enable">
+
+                            <img src="/img/@item.Image" alt="@item.Title" />
+                            <span><span><span></span></span></span>
+
+                            <div>
+                                <h5>@item.Title</h5>
+                            </div>
+                            <div class="template-align-center template-margin-top-2">
+                                <a asp-controller="Service" asp-action="Detail" asp-route-slug="@item.Slug" class="template-component-button template-component-button-style-1">Daha Fazla<i></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+
     <!-- Section -->
     <div class="template-content-section template-padding-top-reset template-padding-bottom-5">
 
@@ -260,47 +331,7 @@
 
 
 
-    <!-- Section -->
-    <div class="template-content-section template-padding-top-reset template-padding-bottom-5">
-
-        <div class="template-main">
-
-            <div class="template-component-header-subheader">
-                <h2>Hizmetlerimiz</h2>
-                <h6>Yenidoğan takibinden uyku eğitimine, sağlıklı çocuk izleminden online danışmanlığa kadar geniş bir yelpaze.</h6>
-                <div></div>
-            </div>
-
-
-
-            <div class="template-component-divider template-component-divider-style-1"></div>
-
-            <div class="template-layout-50x50 template-clear-fix">
-
-                @foreach (var item in DataRequestModel.Services)
-                {
-                    <div class="template-layout-column-left template-margin-bottom-reset">
-                        <div class="template-component-image template-component-image-hover-slide-enable">
-
-                            <img src="/img/@item.Image" alt="@item.Title" />
-                            <span><span><span></span></span></span>
-
-                            <div>
-                                <h5>@item.Title</h5>
-                            </div>
-                            <div class="template-align-center template-margin-top-2">
-                                <a asp-controller="Service" asp-action="Detail" asp-route-slug="@item.Slug" class="template-component-button template-component-button-style-1">Daha Fazla<i></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                }
-
-
-            </div>
-
-        </div>
-    </div>
+  
 
     <!-- Section -->
     <div class="template-content-section template-padding-top-reset">

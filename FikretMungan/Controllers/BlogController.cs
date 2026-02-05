@@ -15,7 +15,7 @@ namespace FikretMungan.Controllers
         [Route("blog")]
         public IActionResult Index()
         {
-            var model= _context.Blogs.ToList();
+            var model= _context.Blogs.OrderByDescending(x => x.CreatedAt).ToList();
             return View(model);
         }
         [Route("blog/{slug}")]
