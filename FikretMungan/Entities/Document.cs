@@ -10,5 +10,7 @@ namespace FikretMungan.Entities
         public string? Image { get; set; }
         [Display(Name = "Anasayfada Göster")]
         public bool IsHome { get; set; }
+        [Display(Name = "Sıra")]
+        public int? OrderNo { get; set; }
     }
 }

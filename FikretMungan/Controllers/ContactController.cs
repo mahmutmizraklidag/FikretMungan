@@ -15,6 +15,7 @@ namespace FikretMungan.Controllers
         {
             _context = context;
         }
+        [Route("iletisim")]
         public IActionResult Index()
         {
             return View();
@@ -36,7 +37,7 @@ namespace FikretMungan.Controllers
                         var temp = MailTemplates.ContactFormTemplate(entity);
                         var confirmationTemp = MailTemplates.CustomerConfirmationTemplate(entity);
                         MailSender mailSender = new MailSender();
-                        await mailSender.SendMailAsync("m.mizraklidag@hotmail.com", "İletişim Formu Talebi", temp, entity.Name);
+                        await mailSender.SendMailAsync(DataRequestModel.SiteSetting.Email, "İletişim Formu Talebi", temp, entity.Name);
                         await mailSender.SendMailAsync(entity.Email, "İletişim Formu Talebiniz Alındı", confirmationTemp, entity.Name);
                         return Json(new { success = true, message = "Mesajınız gönderildi." });
                     }

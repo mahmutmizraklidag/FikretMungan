@@ -10,7 +10,7 @@
 					
 					<div>
 						<div class="template-widget-text">
-							<img src="media/image/foot_logo.png" class="template-footer-logo template-margin-bottom-2" alt="" />
+							<img src="@Url.Content("~/media/image/foot_logo.png")" class="template-footer-logo template-margin-bottom-2" alt="logo" />
 							<p><strong>'Annenin huzuru, çocuğun sağlığıdır'</strong> felsefesiyle yola çıkıyor; bilimsel temelli, güven veren ve sizi gerçekten dinleyen bir yaklaşımla çocuğunuzun büyüme yolculuğuna rehberlik ediyoruz.</p>
 						</div>
 					</div>
@@ -26,7 +26,7 @@
 							<ul>
 								<li><a asp-controller="Home" asp-action="Index">Anasayfa</a></li>
 								<li><a asp-controller="About" asp-action="Index">Hakkımızda</a></li>
-								<li><a asp-controller="Service" asp-action="Index" ">Hizmetlerimiz</a></li>
+								<li><a asp-controller="Service" asp-action="Index">Hizmetlerimiz</a></li>
 								<li><a asp-controller="Blog" asp-action="Index">Blog</a></li>
 								<li><a asp-controller="Document" asp-action="Index">Belgeler</a></li>
 								<li><a asp-controller="Faqs" asp-action="Index">SSS</a></li>
@@ -109,3 +109,40 @@
 	
 
 </div>
+
+
+<style>
+	/* Sadece Mobil Cihazlar İçin (768px altı) */
+	@@media (max-width: 768px) {
+		/* 1. Sağ sütunu görünür yap ve genişlet */
+		.template-footer .template-layout-column-right {
+			display: block !important;
+			visibility: visible !important;
+			width: 100% !important;
+			text-align: center !important; /* Mobilde ikonları ortala */
+			margin-top: 30px !important; /* Üstteki linklerle araya boşluk koy */
+		}
+		/* 2. Sosyal ikon kapsayıcısını görünür yap */
+		.template-component-social-icon {
+			display: block !important;
+			visibility: visible !important;
+			opacity: 1 !important;
+			margin-bottom: 15px;
+		}
+			/* 3. İkon listesini (ul) yatayda ortala */
+			.template-component-social-icon ul {
+				display: inline-flex !important; /* Yan yana dizilmelerini sağlar */
+				justify-content: center;
+				padding: 0;
+				margin: 0 auto;
+				float: none !important; /* Sağa/Sola yaslanmayı iptal et */
+			}
+		/* 4. İletişim bilgilerini (Tel/Mail) de ortala */
+		.template-footer .template-layout-column-right .template-margin-top-2 {
+			display: flex;
+			flex-direction: column;
+			align-items: center; /* Ortala */
+			gap: 10px;
+		}
+	}
+</style>

@@ -126,7 +126,7 @@ namespace FikretMungan.Tools
         </div>
         <div class='footer'>
             <p><strong>Uzm. Dr. Fikret MUNGAN</strong></p>
-            <p style='margin: 5px 0;'>Nöroloji Uzmanı</p>
+            <p style='margin: 5px 0;'>Çocuk Sağ. Ve Hastalıkları Hekimi</p>
             <p class='social-text'>Bu e-posta bir bilgilendirme mesajıdır, lütfen yanıtlamayınız.</p>
             <p style='margin-top:15px; font-size: 11px; border-top: 1px solid #444; padding-top: 15px;'>
                 © {DateTime.Now.Year} | <a href='https://fikretmungan.com'>fikretmungan.com</a>

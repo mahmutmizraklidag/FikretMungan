@@ -11,7 +11,7 @@ namespace FikretMungan.Controllers
         {
             _context = context;
         }
-
+        [Route("hakkimizda")]
         public IActionResult Index()
         {
             var model=_context.Abouts.ToList();

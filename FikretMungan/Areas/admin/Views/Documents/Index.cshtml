@@ -1,10 +1,32 @@
-﻿@model IEnumerable<Document>
+﻿@model IEnumerable<FikretMungan.Entities.Document>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Belge Yönetimi";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
+<style>
+    /* Sürükleme ikonu için stil */
+    .drag-handle {
+        cursor: grab;
+        color: #adb5bd;
+        transition: color 0.2s;
+    }
+
+        .drag-handle:hover {
+            color: #0d6efd; /* Hover olunca mavi olsun */
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+    /* Sürüklenen satırın arkada kalan gölgesi */
+    .sortable-ghost {
+        opacity: 0.4;
+        background-color: #e9ecef;
+    }
+</style>
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -18,59 +40,69 @@
 
     <div class="card shadow-sm border-0 rounded-3">
         <div class="card-body">
+
             <div class="d-flex justify-content-between mb-3">
                 <div class="input-group" style="max-width: 300px;">
                     <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                     <input type="text" id="searchInput" class="form-control" placeholder="Belge ara...">
                 </div>
-                <span class="text-muted small align-self-center">@Model.Count() kayıt bulundu</span>
+                <span class="text-muted small align-self-center">Toplam @Model.Count() kayıt</span>
+            </div>
+
+            <div id="orderSuccessMsg" class="alert alert-success py-2 px-3 mb-3 shadow-sm" style="display:none; font-size:0.95rem;">
+                <i class="bi bi-check-circle-fill me-2"></i> Sıralama başarıyla güncellendi!
             </div>
 
             <div class="table-responsive">
                 <table class="table align-middle table-hover">
                     <thead class="table-light">
                         <tr>
+                            <th style="width: 50px;" class="text-center">#</th>
+                            <th style="width: 80px;">Sıra No</th>
                             <th>Görsel</th>
-                            <th>Belde Adı</th>
-                            <th>Anasayfada Gösterilecek mi?</th>
-                            
+                            <th>Belge Adı</th>
+                            <th>Anasayfa</th>
                             <th class="text-end">İşlemler</th>
                         </tr>
                     </thead>
-                    <tbody id="blogTable">
-                        @foreach (var item in Model)
+                    <tbody id="sortableTable">
+                        @foreach (var item in Model.OrderBy(x => x.OrderNo))
                         {
-                            <tr>
+                            <tr data-id="@item.Id">
+                                <td class="text-center">
+                                    <i class="bi bi-grip-vertical drag-handle fs-4"></i>
+                                </td>
+                                <td class="order-no-cell fw-bold text-muted">@item.OrderNo</td>
+
                                 <td>
                                     @if (!string.IsNullOrEmpty(item.Image))
                                     {
-                                        <img src="/img/@item.Image" alt="image" class="rounded" width="60" height="40" style="object-fit: cover;">
+                                        <img src="/img/@item.Image" alt="belge" class="rounded border" width="60" height="40" style="object-fit: cover;">
                                     }
                                     else
                                     {
-                                        <span class="text-muted small">Yok</span>
+                                        <span class="badge bg-light text-dark border">Resim Yok</span>
                                     }
                                 </td>
 
-                                <td>@item.Title</td>
+                                <td class="fw-semibold">@item.Title</td>
+
                                 <td>
                                     @if (item.IsHome)
                                     {
-                                        <span class="badge bg-success">Evet</span>
+                                        <span class="badge bg-success-subtle text-success border border-success">Evet</span>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-secondary">Hayır</span>
+                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary">Hayır</span>
                                     }
                                 </td>
 
-                              
                                 <td class="text-end">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1" title="Düzenle">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Sil">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
@@ -85,13 +117,71 @@
 
 @section Scripts {
     <script>
-        // Basit tablo arama
+        // --- 1. TABLO ARAMA FONKSİYONU ---
         document.getElementById("searchInput").addEventListener("keyup", function () {
             var value = this.value.toLowerCase();
-            var rows = document.querySelectorAll("#blogTable tr");
+            var rows = document.querySelectorAll("#sortableTable tr");
+
             rows.forEach(function (row) {
-                row.style.display = row.textContent.toLowerCase().includes(value) ? "" : "none";
+                var text = row.textContent.toLowerCase();
+                row.style.display = text.includes(value) ? "" : "none";
             });
+        });
+
+        // --- 2. SÜRÜKLE BIRAK SIRALAMA FONKSİYONU ---
+        var el = document.getElementById('sortableTable');
+
+        var sortable = Sortable.create(el, {
+            handle: '.drag-handle', // Sadece ikon tutulunca çalışır
+            animation: 150,         // Yumuşak geçiş hızı
+            ghostClass: 'sortable-ghost', // Sürüklenen öğenin arkasındaki stil
+
+            onEnd: function (evt) {
+                // Sürükleme bitince bu fonksiyon çalışır
+
+                var newOrder = [];
+                var rows = document.querySelectorAll('#sortableTable tr');
+
+                // Yeni sıralamayı oluştur ve görsel sıra numaralarını güncelle
+                rows.forEach(function(row, index) {
+                    // ID'yi listeye ekle
+                    newOrder.push(row.getAttribute('data-id'));
+
+                    // Tablodaki "Sıra No" hücresini hemen güncelle (Sayfa yenilenmeden)
+                    var orderCell = row.querySelector('.order-no-cell');
+                    if(orderCell) {
+                        orderCell.innerText = index + 1;
+                    }
+                });
+
+                // Sunucuya gönder (Area: admin, Controller: Documents)
+                fetch('/admin/Documents/UpdateOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    // ID dizisini MVC'nin anlayacağı formata çeviriyoruz
+                    body: 'idList=' + newOrder.join('&idList=')
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Başarılı mesajını göster
+                        var msg = document.getElementById('orderSuccessMsg');
+                        msg.style.display = 'block';
+
+                        // 2 saniye sonra mesajı gizle
+                        setTimeout(() => {
+                            $(msg).fadeOut('slow'); // jQuery varsa fadeOut, yoksa msg.style.display = 'none';
+                        }, 2000);
+                    } else {
+                        alert("Sıralama sunucuya kaydedilemedi!");
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    alert("Bir bağlantı hatası oluştu.");
+                });
+            }
         });
     </script>
 }

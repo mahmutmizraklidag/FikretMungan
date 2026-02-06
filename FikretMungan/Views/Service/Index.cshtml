@@ -4,8 +4,8 @@
     ViewData["Title"] = "Hizmetlerimiz";
     ViewData["MetaDescription"] = "İdeio Creative Reklam Ajansı";
     ViewData["MetaKeywords"] = "İdeio Creative Reklam Ajansı";
-
 }
+
 <div class="template-content">
 
     <div class="template-content-section template-padding-top-reset template-padding-bottom-5 template-main">
@@ -17,14 +17,27 @@
         </div>
 
         <div class="template-layout-50x50 template-clear-fix">
-            @foreach(var item in Model)
+
+            @{
+                int sayac = 0; // 1. Sayaç tanımlıyoruz
+            }
+
+            @foreach (var item in Model)
             {
-                <div class="template-layout-column-left template-margin-bottom-reset">
+                // 2. Sıra çiftse (0, 2, 4...) SOLA, tekse (1, 3, 5...) SAĞA yaslıyoruz
+                string columnClass = (sayac % 2 == 0) ? "template-layout-column-left" : "template-layout-column-right";
+
+                // 3. Alt alta yapışmamaları için margin ekliyoruz (reset'i kaldırdım veya margin ekledim)
+                // "template-margin-bottom-reset" yerine "template-margin-bottom-30" gibi bir şey gerekebilir.
+                // Ancak temanın orijinalinde reset varsa ve otomatik boşluk bırakıyorsa kalsın.
+                // Ben şimdilik hizalama sorunu çözdüm:
+
+                <div class="@columnClass template-margin-bottom-reset" style="margin-bottom:30px !important">
                     <div class="template-component-image template-component-image-hover-slide-enable">
-                        
-                            <img src="/img/@item.Image" alt="@item.Title" />
-                            <span><span><span></span></span></span>
-                        
+
+                        <img src="/img/@item.Image" alt="@item.Title" />
+                        <span><span><span></span></span></span>
+
                         <div>
                             <h5>@item.Title</h5>
                         </div>
@@ -34,9 +47,8 @@
                     </div>
                 </div>
 
+                sayac++; // 4. Sayacı her turda 1 artırıyoruz
             }
-          
-            
 
         </div>
 

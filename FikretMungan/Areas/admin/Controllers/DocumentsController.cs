@@ -99,7 +99,8 @@ namespace FikretMungan.Areas.admin.Controllers
             }
             dbReference.Title = document.Title;
             dbReference.IsHome = document.IsHome;
-           
+            dbReference.OrderNo = document.OrderNo;
+
             _context.Update(dbReference);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Documents", new { area = "Admin" });
@@ -141,7 +142,40 @@ namespace FikretMungan.Areas.admin.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateOrder(int[] idList)
+        {
+            try
+            {
+                // 1. Gelen ID listesindeki tüm dökümanları veritabanından çekiyoruz.
+                // (Tek tek sorgu atmak yerine toplu çekmek performansı artırır)
+                var documents = await _context.Documents
+                                              .Where(d => idList.Contains(d.Id))
+                                              .ToListAsync();
 
+                // 2. Gelen sıralı listeye göre döngü kuruyoruz
+                for (int i = 0; i < idList.Length; i++)
+                {
+                    // Listeden o anki ID'ye sahip dökümanı buluyoruz
+                    var doc = documents.FirstOrDefault(d => d.Id == idList[i]);
+
+                    if (doc != null)
+                    {
+                        // Dizideki sırasına göre OrderNo'yu güncelliyoruz (+1 çünkü dizi 0'dan başlar)
+                        doc.OrderNo = i + 1;
+                    }
+                }
+
+                // 3. Değişiklikleri kaydediyoruz
+                await _context.SaveChangesAsync();
+
+                return Ok(); // Başarılı (200) döndür
+            }
+            catch (Exception)
+            {
+                return BadRequest(); // Hata oluştu
+            }
+        }
         private bool DocumentExists(int id)
         {
             return _context.Documents.Any(e => e.Id == id);

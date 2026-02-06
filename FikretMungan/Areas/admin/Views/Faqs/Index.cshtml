@@ -4,8 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-
-
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-primary mb-0">
@@ -30,22 +28,31 @@
                 <table class="table align-middle table-hover">
                     <thead class="table-light">
                         <tr>
-                            <th>Soru</th>
-                            <th>Cevap</th>
-                           
-                            <th class="text-end">İşlemler</th>
+                            <th style="width: 25%;">Soru</th>
+                            <th style="width: 55%;">Cevap</th>
+                            <th style="width: 20%;" class="text-end">İşlemler</th>
                         </tr>
                     </thead>
                     <tbody id="blogTable">
                         @foreach (var item in Model)
                         {
                             <tr>
-                              
+                                <td class="fw-semibold">@item.Question</td>
 
-                                <td>@item.Question</td>
-                                <td>@item.Answer</td>
-                               
+                                <td>
+                                    <div class="answer-preview">
+                                        @Html.Raw(item.Answer)
+                                    </div>
+                                    <div class="full-answer-content d-none">
+                                        @Html.Raw(item.Answer)
+                                    </div>
+                                </td>
+
                                 <td class="text-end">
+                                    <button type="button" class="btn btn-sm btn-outline-info me-1 view-btn" data-bs-toggle="modal" data-bs-target="#answerModal">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
@@ -63,14 +70,65 @@
     </div>
 </div>
 
+<div class="modal fade" id="answerModal" tabindex="-1" aria-labelledby="answerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="answerModalLabel">Cevap Detayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body" id="modalAnswerBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .answer-preview {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Sadece 2 satır göster */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 500px; /* Maksimum genişlik */
+        color: #555;
+        font-size: 0.9rem;
+    }
+        /* Tablo içindeki HTML etiketlerinin (p, ul vb) tabloyu bozmaması için */
+        .answer-preview * {
+            margin: 0;
+            padding: 0;
+            display: inline; /* Blok elementleri satır içi yapar */
+        }
+</style>
+
 @section Scripts {
     <script>
-        // Basit tablo arama
+        // 1. Arama Fonksiyonu
         document.getElementById("searchInput").addEventListener("keyup", function () {
             var value = this.value.toLowerCase();
             var rows = document.querySelectorAll("#blogTable tr");
             rows.forEach(function (row) {
                 row.style.display = row.textContent.toLowerCase().includes(value) ? "" : "none";
+            });
+        });
+
+        // 2. Modal İçerik Doldurma Fonksiyonu
+        // Görüntüle (Göz) butonuna tıklanınca çalışır
+        var viewButtons = document.querySelectorAll('.view-btn');
+        var modalBody = document.getElementById('modalAnswerBody');
+
+        viewButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                // Tıklanan satırdaki gizli tam içeriği bul
+                var row = this.closest('tr');
+                var fullContent = row.querySelector('.full-answer-content').innerHTML;
+
+                // Modala yaz
+                modalBody.innerHTML = fullContent;
             });
         });
     </script>

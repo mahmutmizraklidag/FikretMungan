@@ -62,7 +62,7 @@ namespace FikretMungan.Areas.admin.Controllers
             {
                 _context.Add(faq);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Faqs", new { area = "Admin" });
             }
             return View(faq);
         }
@@ -113,7 +113,7 @@ namespace FikretMungan.Areas.admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Faqs", new { area = "Admin" });
             }
             return View(faq);
         }
@@ -148,7 +148,7 @@ namespace FikretMungan.Areas.admin.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Faqs", new { area = "Admin" });
         }
 
         private bool FaqExists(int id)
